@@ -1,0 +1,71 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="bg-success p-2 text-dark bg-opacity-25">
+<h1 align='center'> Event Registration </h1>
+<br><br><br><br><br>
+<div class="bg-success p-2 text-dark bg-opacity-25">
+<div class="container px-4">
+<form class="row g-3" action="Eventreg.html" method="POST">
+  {% csrf_token %}
+  <div class="col-md-6">
+    <label for="Eventname" class="form-label">Event Name</label>
+    <input type="text" class="form-control" id="Eventname" name="Eventname">
+  </div>
+  <div class="mb-3">
+    <label for="Desc" class="form-label">Description</label>
+    <textarea class="form-control" id="Desc" name="Desc" rows="3" placeholder="Tell us something about your event"></textarea>
+  </div>
+  <div class="col-12">
+    <label for="inputAddress" class="form-label">Address</label>
+    <input type="text" class="form-control" id="inputAddress" name="inputAddress" placeholder="1234 Main St">
+  </div>
+  
+  <div class="col-md-6">
+    <label for="inputCity" class="form-label">City</label>
+    <input type="text" class="form-control" id="inputCity" name="inputCity">
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">State</label>
+    <select id="inputState" name="inputState" class="form-select">
+      <option selected>Choose...</option>
+      <option>...</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <label for="inputZip" class="form-label">Zip</label>
+    <input type="text" class="form-control" id="inputZip" name="inputZip">
+  </div>
+  <div class="col-md-3">
+    <label for="Eventstart" class="form-label">From:</label>
+    <input type="date" class="form-control" id="Eventstart" name="Eventstart">
+    <input type="time" class="form-control" id="Eventstartt" name="Eventstartt">
+  </div>
+  <div class="col-md-3">
+    <label for="Eventend" class="form-label">To:</label>
+    <input type="date" class="form-control" id="Eventend" name="Eventend">
+    <input type="time" class="form-control" id="Eventendt" name="Eventendt">
+  </div>
+  <div class="col-md-3">
+    <label for="Eventreg" class="form-label">Registration Deadline</label>
+    <input type="date" class="form-control" id="Eventreg" name="Eventreg">
+    <input type="time" class="form-control" id="Eventregt" name="Eventregt">
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Host Email</label>
+    <input type="email" class="form-control" id="inputEmail4" name="inputEmail4">
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">Host Password</label>
+    <input type="password" class="form-control" id="inputPassword4" name="inputPassword4">
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary" value="POST"/>Submit</button>
+  </div>
+</form>
+</div>
+</div>
+</div>
+{% endblock content %}
