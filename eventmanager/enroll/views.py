@@ -6,10 +6,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from enroll.models import Event, Participant
-from django.contrib import messages
-from django.core.mail import send_mail
+#from django.contrib import messages
+#from django.core.mail import send_mail
 from django.conf import settings
-from twilio.rest import Client
+#from twilio.rest import Client
 
 def index(request):
     template=loader.get_template('home.html')
@@ -40,13 +40,13 @@ def Regis(request):
         event.save()
 
         str="Your Event is registered successfully.\nYour event ID is %s .\n"%(Event.objects.latest('id'))
-        send_mail(
-            'Success',
-            str,
-            'managerevent15@gmail.com',
-            [event.inputEmail4],
-            fail_silently=False
-        )
+        #send_mail(
+        #    'Success',
+        #    str,
+        #    '',
+        #    [event.inputEmail4],
+        #    fail_silently=False
+        #)
         
         return render(request, 'home.html')  
 
@@ -76,20 +76,20 @@ def partiRegis(request):
             p.pno=1            
         p.save()
         str="Your are registered for the event %s successfully.\nYour event ID is %s .\n"%(Event.objects.get(id=p.eventID).Eventname,p.eventID)
-        send_mail(
-            'Success',
-            str,
-            'managerevent15@gmail.com',
-            [p.Email],
-            fail_silently=False
-        )
-        message_to_broadcast = ("U r registered successfully")
-        client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-        
-        client.messages.create(to=p.contact,
-                            from_=settings.TWILIO_NUMBER,
-                            body=message_to_broadcast)
-        return render(request, 'home.html')
+        #send_mail(
+        #    'Success',
+        #    str,
+        #    '',
+        #    [p.Email],
+        #    fail_silently=False
+        #)
+        #message_to_broadcast = ("U r registered successfully")
+        #client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+        #
+        #client.messages.create(to=p.contact,
+        #                    from_=settings.TWILIO_NUMBER,
+        #                    body=message_to_broadcast)
+        #return render(request, 'home.html')
 
     events=Event.objects.filter()
     events=Event.objects.all() 
