@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% include 'messages.html' %}
 <div class="bg-success p-2 text-dark bg-opacity-25">
 <h1 align='center'> Event Dashboard </h1>
 <br><br><br><br><br>
@@ -12,13 +13,13 @@
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Event ID</label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" name="eventID" id="staticEmail">
+      <input type="text" class="form-control" name="eventID" id="staticEmail" required>
     </div>
 </div>
 <div class="mb-3 row">
     <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
     <div class="col-sm-5">
-      <input type="password" name="password" class="form-control" id="inputPassword">
+      <input type="password" name="password" class="form-control" id="inputPassword" required>
     </div>
 </div>
 <div class="col-12">
@@ -28,6 +29,14 @@
 </div>
 </div>
 </div>
+<script>
+$(document).ready(function() {
+  function disableBack() { window.history.forward() }
+
+  window.onload = disableBack();
+  window.onpageshow = function(evt) { if (evt.persisted) disableBack() }
+});
+</script>
 <div>
   <table class="table">
     <thead>
@@ -38,7 +47,6 @@
         <th scope="col">Event ID</th>
         <th scope="col">Contact No.</th>
         <th scope="col">Registration type</th>
-        <th scope="col"> </th>
         <th scope="col">No. of participants</th>
       </tr>
     </thead>
@@ -51,7 +59,6 @@
         <td>{{p.eventID}}</td>
         <td>{{p.contact}}</td>
         <td>{{p.inlineRadio1}}</td>
-        <td>{{p.inlineRadio2}}</td>
         <td>{{p.pno}}</td>
       </tr>
   {% endfor %}

@@ -10,7 +10,7 @@ from django.db import models
 
 
 class Event(models.Model):
-    Eventname=models.CharField(max_length=100, unique=True)
+    Eventname=models.CharField(max_length=100, unique=False)
     Desc= models.TextField()
     inputAddress=models.TextField()
     inputCity=models.CharField(max_length=100, unique=False)
@@ -31,5 +31,4 @@ class Participant(models.Model):
     contact=models.CharField(max_length=100, unique=False)
     eventID=models.CharField(max_length=100, unique=False)
     inlineRadio1=models.CharField(max_length=100, unique=False)
-    inlineRadio2=models.CharField(max_length=100, unique=False)
     pno=models.PositiveIntegerField(default=1)    

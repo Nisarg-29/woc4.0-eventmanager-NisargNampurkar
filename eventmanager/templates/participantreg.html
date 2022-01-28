@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% include 'messages.html' %}
 <div class="bg-success p-2 text-dark bg-opacity-25">
 <h1 align='center'> Participant Registration </h1>
 <br><br><br><br><br>
@@ -10,15 +11,15 @@
   {% csrf_token %}
 <div class="col-md-6">
   <label for="name" class="form-label">Name</label>
-  <input type="text" class="form-control" id="name" name="name">
+  <input type="text" class="form-control" id="name" name="name" required>
 </div>
 <div class="col-md-6">
   <label for="Email" class="form-label">Email ID</label>
-  <input type="email" class="form-control" id="Email" name="Email">
+  <input type="email" class="form-control" id="Email" name="Email" required>
 </div>
 <div class="col-md-6">
   <label for="contact" class="form-label">Contact No.:</label>
-  <input type="text" class="form-control" id="contact" name="contact">
+  <input type="text" class="form-control" id="contact" name="contact" required>
 </div>
 <br>
 <br>
@@ -26,8 +27,8 @@
     Event:  
 {% for e in events %} 
 <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="inlineCheckbox1" value={{e.id}} id="inlineCheckbox1">
-  <label class="form-check-label" for="inlineCheckbox1">{{e.Eventname}}</label>
+  <label class="form-check-label"><input class="form-check-input" type="checkbox" name="inlineCheckbox1" value={{e.id}} id="test">
+  {{e.Eventname}}</label>
 </div>
 {% endfor %}
 <br>
@@ -50,6 +51,21 @@
 </div>
 
 <script type="text/javascript">
+  $("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+    $box.prop("checked", true);
+  } else {
+    $box.prop("checked", false);
+  }
+});
   $(document).ready(function() {
       $('input[type="radio"]').click(function() {
           var inputValue = $(this).attr("value");

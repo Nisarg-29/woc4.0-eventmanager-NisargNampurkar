@@ -6,10 +6,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from enroll.models import Event, Participant
-#from django.contrib import messages
-#from django.core.mail import send_mail
+from django.contrib import messages
+from django.core.mail import send_mail
 from django.conf import settings
-#from twilio.rest import Client
+from twilio.rest import Client
 
 def index(request):
     template=loader.get_template('home.html')
@@ -37,17 +37,29 @@ def Regis(request):
         event.Eventregt=request.POST.get('Eventregt')
         event.inputEmail4=request.POST.get('inputEmail4')
         event.inputPassword4=request.POST.get('inputPassword4')
+        if event.Eventstart > event.Eventend or (event.Eventstart == event.Eventend and event.Eventstartt > event.Eventendt):
+            messages.error(request, "Error! Event end time can't be earlier than start time. Please enter valid combination of dates")
+            return render(request, 'home.html')  
+        name=Event.objects.filter(Eventname=event.Eventname)
+        for n in name:
+            if str(n.Eventend) > event.Eventstart or (str(n.Eventend) == event.Eventstart and str(n.Eventendt) > event.Eventstartt):
+                continue
+            elif event.Eventend > str(n.Eventstart) or (event.Eventend == str(n.Eventstart) and event.Eventendt > str(n.Eventstartt)):
+                continue
+            else:
+                messages.error(request,"Error! Another event with provided name is already scheduled during same timings.")
+                return render(request, 'home.html')  
         event.save()
 
-        str="Your Event is registered successfully.\nYour event ID is %s .\n"%(Event.objects.latest('id'))
+        #Body="Your Event is registered successfully.\nYour event ID is %s .\nHere is what we received from you:\n Eventname - %s \n Description - %s \n Venue - %s \n City - %s \n State - %s \n Zip - %s \n From - %s %s \n To - %s %s \n Registration Deadline - %s %s \n Host Email - %s \n Password - %s"%(Event.objects.latest('id').id,event.Eventname,event.Desc,event.inputAddress,event.inputCity,event.inputState,event.inputZip,event.Eventstart,event.Eventstartt,event.Eventend,event.Eventendt,event.Eventreg,event.Eventregt,event.inputEmail4,event.inputPassword4)
         #send_mail(
         #    'Success',
-        #    str,
-        #    '',
+        #    Body,
+        #    'managerevent15@gmail.com',
         #    [event.inputEmail4],
         #    fail_silently=False
         #)
-        
+        messages.success(request, "Registration successful" )
         return render(request, 'home.html')  
 
     template=loader.get_template('Eventreg.html')
@@ -66,30 +78,36 @@ def partiRegis(request):
         p.contact=request.POST.get("contact")
         p.eventID=request.POST.get("inlineCheckbox1")
         p.inlineRadio1=request.POST.get("colorRadio1")
-        p.inlineRadio2=request.POST.get("colorRadio1")
-        if len(p.inlineRadio2)==0:
+        if p.inlineRadio1=="Group":
             try:
                 p.pno=request.POST.get("pno")
             except:
                 p.pno=2
         else:
-            p.pno=1            
+            p.pno=1   
+        plist=Participant.objects.all()
+        for P in plist:
+            if (P.Email==p.Email and P.eventID==p.eventID):
+                messages.error(request,"Error! You are already registered in this event.") 
+                return render(request, 'home.html')             
         p.save()
-        str="Your are registered for the event %s successfully.\nYour event ID is %s .\n"%(Event.objects.get(id=p.eventID).Eventname,p.eventID)
+        event=Event.objects.get(id=p.eventID)
+        Body="Your registration for participation in out event %s is successful.\nYour unique ID as participant is %s. Here are the details of your event. \n Event ID - %s .\n Eventname - %s \n Description - %s \n Venue - %s \n City - %s \n State - %s \n Zip - %s \n From - %s %s \n To - %s %s \n"%(event.Eventname,Participant.objects.latest('id').id,event.id, event.Eventname,event.Desc,event.inputAddress,event.inputCity,event.inputState,event.inputZip,event.Eventstart,event.Eventstartt,event.Eventend,event.Eventendt)
         #send_mail(
         #    'Success',
-        #    str,
-        #    '',
+        #    Body,
+        #    'managerevent15@gmail.com',
         #    [p.Email],
         #    fail_silently=False
         #)
-        #message_to_broadcast = ("U r registered successfully")
+        
         #client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-        #
+        
         #client.messages.create(to=p.contact,
         #                    from_=settings.TWILIO_NUMBER,
-        #                    body=message_to_broadcast)
-        #return render(request, 'home.html')
+        #                    body=Body)
+        messages.success(request, "Registration successful" )                    
+        return render(request, 'home.html')
 
     events=Event.objects.filter()
     events=Event.objects.all() 
@@ -105,14 +123,16 @@ def dashboard(request):
         eVentID=request.POST.get('eventID')
         password=request.POST.get('password')
         plist=Participant.objects.filter(eventID=eVentID)
-        ev=Event.objects.get(id=eVentID)
-        if ev:
+        try:
+            ev=Event.objects.get(id=eVentID)
             if ev.inputPassword4 == password:
                 return render(request, 'Dashboard.html',{'plist':plist})
             else:
-                return HttpResponse("Incorrect_Password\n")  
-        else:
-            return HttpResponse("No event with event ID you provided\n")
+                messages.error(request,"Incorrect_Password")  
+                return render(request, 'Dashboard.html')  
+        except:
+            messages.error(request,"No event with event ID you provided")
+            return render(request, 'Dashboard.html')  
 
     return render(request, 'Dashboard.html')
     
