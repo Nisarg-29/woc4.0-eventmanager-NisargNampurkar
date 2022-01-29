@@ -19,6 +19,7 @@ from django.urls import path, re_path, include
 
 urlpatterns = [
     re_path(r'^$', views.index ,name='index'),
+    re_path(r'^home.html', views.index ,name='index'),
     re_path(r'^Eventreg.html', views.Regis ,name='Regis'),
     re_path(r'^participantreg.html', views.partiRegis ,name='partiRegis'),
     re_path(r'^Dashboard.html', views.dashboard ,name='dashboard'),
