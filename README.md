@@ -1,9 +1,14 @@
 # woc4.0-eventmanager-NisargNampurkar
+
 The folder eventmanager contains the codes/components of MyEventManager web application made using django web framework.
 This is my project on Event Manager web application.
+
 The main functionalities include:
+
 1)An organiser/host can register an event.
+
 2)A participant can register for that event that has been registered by any organiser and which is open for registration(the deadline has not passed).
+
 3)The organiser/host can retrieve all details about the participants registered for their event at any point of time which needs authentication.
 
 Project Components and properties/constraints/criterias implemented:
