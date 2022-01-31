@@ -2,11 +2,53 @@
 
 {% block content %}
 {% include 'messages.html' %}
+
 <div class="bg-success p-2 text-dark bg-opacity-25">
 <h1 align='center'> Participant Registration </h1>
 <a href="home.html"><button type="button" class="btn btn-primary btn-sm"> <-- Return to Home Page </button></a><br><br><br>
-<div class="bg-success p-2 text-dark bg-opacity-25">
-<div class="container px-4">
+
+  <div>
+    <h2 align='center'>Following events are open for registration</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Event Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Venue</th>
+          <th scope="col">City</th>
+          <th scope="col">State</th>
+          <th scope="col">Zip</th>
+          <th scope="col">From </th>
+          <th scope="col"></th>
+          <th scope="col">To</th>
+          <th scope="col"> </th>
+        </tr>
+      </thead>
+      <tbody>   
+    {% for event in events %}
+        <tr>
+          <th scope="row">{{event.id}}</th>
+          <td>{{event.Eventname}}</td>
+          <td>{{event.Desc}}</td>
+          <td>{{event.inputAddress}}</td>
+          <td>{{event.inputCity}}</td>
+          <td>{{event.inputState}}</td>
+          <td>{{event.inputZip}}</td>
+          <td>{{event.Eventstart}}</td>
+          <td>{{event.Eventstartt}}</td>
+          <td>{{event.Eventend}}</td>
+          <td>{{event.Eventendt}}</td>
+        </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+  <p>Fill the form given below to participate in any event</p>
+  </div>  
+  <div class="bg-success p-2 text-dark bg-opacity-25">
+    <div class="container px-4">
+      
+  <br><br>      
 <form align= "center" class="row g-3" action="participantreg.html" method="POST">
   {% csrf_token %}
 <div class="col-md-6">
@@ -36,7 +78,7 @@
 
 <div>
   <label>
-      <input class="form-check-input" type="radio" name="colorRadio1" 
+    <input class="form-check-input" type="radio" name="colorRadio1" 
              value="individual"> Individual</label>
   <label>
       <input class="form-check-input" type="radio" name="colorRadio1" 
@@ -74,6 +116,7 @@
           $(targetBox).show();
       });
   });
+  
 </script>
 
 
