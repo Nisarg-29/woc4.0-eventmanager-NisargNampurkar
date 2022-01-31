@@ -33,4 +33,5 @@ Front-end:
 Front-end is created using HTML, CSS and Javascript and it's a responsive website.
 
 Please go through the demo Video of the working of the Web Application: https://drive.google.com/file/d/1lfgLue9TeqQwU8u_P9iIuB4meW4RLFEg/view
+Video highlighting some of the obvious Criterias to be followed while registration or authentication: https://drive.google.com/file/d/1uo3--2UAZ24hVJVQ3p4Zgf-1PZFjcuLi/view
 
